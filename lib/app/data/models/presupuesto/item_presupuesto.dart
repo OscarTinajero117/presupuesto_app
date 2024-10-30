@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../../abstract/abstract_model.dart';
 
 class ItemPresupuesto implements AbstractModel<ItemPresupuesto> {
-  final int id;
+  final int? id;
   final int idPresupuesto;
   final String descripcion;
   final double costo;
@@ -12,13 +12,13 @@ class ItemPresupuesto implements AbstractModel<ItemPresupuesto> {
   final DateTime? fechaUpdate;
 
   ItemPresupuesto({
-    required this.id,
+    this.id,
     required this.idPresupuesto,
     required this.descripcion,
     required this.costo,
     required this.cantidad,
     required this.fechaInsert,
-    required this.fechaUpdate,
+    this.fechaUpdate,
   });
 
   @override

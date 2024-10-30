@@ -3,18 +3,18 @@ import 'package:intl/intl.dart';
 import '../../abstract/abstract_model.dart';
 
 class Presupuesto implements AbstractModel<Presupuesto> {
-  final int id;
+  final int? id;
   final String descripcion;
   final double presupuesto;
   final DateTime fechaInsert;
   final DateTime? fechaUpdate;
 
   Presupuesto({
-    required this.id,
+    this.id,
     required this.descripcion,
     required this.presupuesto,
     required this.fechaInsert,
-    required this.fechaUpdate,
+    this.fechaUpdate,
   });
 
   @override
@@ -43,6 +43,12 @@ class Presupuesto implements AbstractModel<Presupuesto> {
             ? DateFormat('yyyy-MM-dd HH:mm:ss').format(fechaUpdate!)
             : null,
       };
+
+  factory Presupuesto.getDefault() => Presupuesto(
+        descripcion: '',
+        presupuesto: 0.0,
+        fechaInsert: DateTime.now(),
+      );
 
   factory Presupuesto.fromJson(Map<String, dynamic> json) => Presupuesto(
         id: json["id"],
