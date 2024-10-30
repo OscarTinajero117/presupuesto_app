@@ -10,12 +10,12 @@ abstract class AppPages {
   static final pages = [
     GetPage(
       name: Routes.HOME,
-      page: () => HomePage(),
+      page: () => const HomePage(),
       binding: HomeBinding(),
     ),
     GetPage(
       name: Routes.PRESUPUESTO,
-      page: () => PresupuestoPage(),
+      page: () => const PresupuestoPage(),
       binding: PresupuestoBinding(),
     ),
   ];
