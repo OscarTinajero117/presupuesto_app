@@ -17,7 +17,7 @@ class ItemPresupuestoProvider extends CRUD
 
   @override
   Future<int> deleteItem({required ItemPresupuesto model}) async =>
-      await delete(where: 'id=?', whereArgs: [model.id]);
+      await delete(where: 'id=?', whereArgs: [model.id!]);
 
   /// Los argumentos necesarios son:
   /// ```dart
@@ -56,8 +56,14 @@ class ItemPresupuestoProvider extends CRUD
 
   @override
   Future<ItemPresupuesto> saveItem({required ItemPresupuesto model}) async {
-    final item = await getItem(arguments: [model.id]);
-    item == null ? insertItem(model: model) : updateItem(model: model);
+    if (model.id == null) {
+      final id = await insertItem(model: model);
+      final item = await getItem(arguments: [id]);
+      return item!;
+    }
+
+    await updateItem(model: model);
+
     return model;
   }
 
@@ -66,6 +72,6 @@ class ItemPresupuestoProvider extends CRUD
       await update(
         json: model.toJson(),
         where: 'id=?',
-        whereArgs: [model.id],
+        whereArgs: [model.id!],
       );
 }

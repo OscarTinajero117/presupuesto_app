@@ -12,7 +12,7 @@ class PresupuestoProvider extends CRUD implements AbstractSQL<Presupuesto> {
 
   @override
   Future<int> deleteItem({required Presupuesto model}) async =>
-      await delete(where: 'id = ?', whereArgs: [model.id]);
+      await delete(where: 'id = ?', whereArgs: [model.id!]);
 
   /// Los argumentos necesarios son:
   /// ```dart
@@ -44,8 +44,13 @@ class PresupuestoProvider extends CRUD implements AbstractSQL<Presupuesto> {
 
   @override
   Future<Presupuesto> saveItem({required Presupuesto model}) async {
-    final item = await getItem(arguments: [model.id]);
-    item == null ? insertItem(model: model) : updateItem(model: model);
+    if (model.id == null) {
+      final id = await insertItem(model: model);
+      final item = await getItem(arguments: [id]);
+      return item!;
+    }
+
+    await updateItem(model: model);
 
     return model;
   }
@@ -54,6 +59,6 @@ class PresupuestoProvider extends CRUD implements AbstractSQL<Presupuesto> {
   Future<int> updateItem({required Presupuesto model}) async => await update(
         json: model.toJson(),
         where: 'id=?',
-        whereArgs: [model.id],
+        whereArgs: [model.id!],
       );
 }
