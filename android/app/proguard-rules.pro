@@ -5,7 +5,3 @@
 -keep class io.flutter.view.**  { *; }
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
-
--keep class com.oscartinajero117.presupuesto_app.** { *; }
--keep class get.** { *; }
--keepattributes *Annotation*
