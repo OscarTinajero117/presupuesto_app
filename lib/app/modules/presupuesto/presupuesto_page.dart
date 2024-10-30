@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../widgets/appbar/my_appbar.dart';
+import '../../widgets/input/form_input.dart';
 import 'presupuesto_controller.dart';
 
 class PresupuestoPage extends GetView<PresupuestoController> {
@@ -9,20 +10,31 @@ class PresupuestoPage extends GetView<PresupuestoController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: myAppBar(
-        title: const Text('Presupuesto: Tal'),
+        title: Text(controller.presupuesto.value.descripcion),
       ),
       body: Column(
         children: [
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  'Total: \$ 1000.00',
-                ),
+                Obx(() => Text(
+                      'Total: \$ ${controller.totalRestante}',
+                      style: TextStyle(
+                        color: controller.totalRestante <
+                                controller.presupuesto.value.presupuesto * 0.1
+                            ? theme.colorScheme.error
+                            : controller.totalRestante <
+                                    controller.presupuesto.value.presupuesto *
+                                        0.3
+                                ? Colors.yellow.shade800
+                                : Colors.green.shade700,
+                      ),
+                    )),
               ],
             ),
           ),
@@ -31,20 +43,35 @@ class PresupuestoPage extends GetView<PresupuestoController> {
               child: ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
-                  const FormInput(
+                  FormInput(
+                    focusNode: controller.descripcionFocus,
+                    keyboardType: TextInputType.text,
+                    controller: controller.descripcion,
+                    onFieldSubmitted: controller.onFieldSubmittedDescripcion,
                     labelText: 'Descripcion',
+                    hintText: 'Ejemplo: Lapices',
                   ),
-                  const FormInput(
+                  FormInput(
+                    focusNode: controller.costoFocus,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    controller: controller.costo,
+                    onFieldSubmitted: controller.onFieldSubmittedCosto,
                     labelText: 'Costo',
+                    hintText: 'Ejemplo: 10.50',
                   ),
-                  const FormInput(
+                  FormInput(
+                    focusNode: controller.cantidadFocus,
+                    keyboardType: const TextInputType.numberWithOptions(),
+                    controller: controller.cantidad,
+                    onFieldSubmitted: controller.onFieldSubmittedCantidad,
                     labelText: 'Cantidad',
+                    hintText: 'Ejemplo: 4',
                   ),
                   const SizedBox(height: 20),
                   FilledButton(
-                    onPressed: () {
-                      // TODO: Agregar item_presupuesto
-                    },
+                    onPressed: () async =>
+                        await controller.saveItemPresupuesto(),
                     child: const Text('Agregar'),
                   ),
                 ],
@@ -58,47 +85,41 @@ class PresupuestoPage extends GetView<PresupuestoController> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(20),
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Descripcion $index'),
-                    subtitle: Text('Cantidad $index'),
-                    trailing: IconButton(
-                      icon: const Icon(
-                        Icons.delete_forever,
-                        color: Colors.red,
+              child: Obx(
+                () => ListView.builder(
+                  itemCount: controller.listItems.length,
+                  itemBuilder: (context, index) {
+                    final item = controller.listItems[index];
+                    return ListTile(
+                      title: Text(item.descripcion),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Unidad: \$ ${item.costo}'),
+                              Text('Cantidad: ${item.cantidad}'),
+                            ],
+                          ),
+                          Text('Total:     \$ ${item.cantidad * item.costo}'),
+                        ],
                       ),
-                      onPressed: () async {
-                        // TODO: Eliminar item_presupuesto
-                      },
-                    ),
-                  );
-                },
+                      trailing: IconButton(
+                        icon: const Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                        onPressed: () async =>
+                            await controller.deleteItemPresupuesto(item),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class FormInput extends StatelessWidget {
-  final String labelText;
-  const FormInput({
-    super.key,
-    required this.labelText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: labelText,
-        ),
       ),
     );
   }
