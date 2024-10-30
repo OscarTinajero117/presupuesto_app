@@ -31,7 +31,7 @@ class HomePage extends GetView<HomeController> {
                         controller.cantidad.text = item.presupuesto.toString();
                         controller.descripcion.text = item.descripcion;
 
-                        await _savePresupuestoModal(model: item);
+                        await _savePresupuestoModal(context, model: item);
                       },
                       icon: const Icon(Icons.edit_note),
                     ),
@@ -45,98 +45,130 @@ class HomePage extends GetView<HomeController> {
                         color: Colors.red,
                       ),
                       onPressed: () async => await _deletePresupuestoModal(
-                          theme.colorScheme.error, item),
+                        context,
+                        deleteColor: theme.colorScheme.error,
+                        item: item,
+                      ),
                     ),
                   );
                 },
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await _savePresupuestoModal(),
+        onPressed: () async => await _savePresupuestoModal(context),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Future<dynamic> _deletePresupuestoModal(Color deleteColor, Presupuesto item) {
-    return Get.defaultDialog(
-        title: 'Eliminar presupuesto',
-        titleStyle: TextStyle(
-          fontSize: 20,
-          color: deleteColor,
-        ),
-        middleText: '¿Estas seguro de eliminar este presupuesto?',
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: const Text('Cancelar'),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: deleteColor,
-              textStyle: const TextStyle(color: Colors.white),
-            ),
-            onPressed: () async => await controller.deletePresupuesto(item),
-            child: const Text('Eliminar'),
-          ),
-        ]);
+  Future<dynamic> _deletePresupuestoModal(
+    BuildContext context, {
+    required Color deleteColor,
+    required Presupuesto item,
+  }) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                'Eliminar presupuesto',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: deleteColor,
+                ),
+              ),
+              titlePadding: const EdgeInsets.all(10.0),
+              content: Container(
+                margin: const EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Text('¿Estas seguro de eliminar este presupuesto?'),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text('Cancelar'),
+                          ),
+                          FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: deleteColor,
+                              textStyle: const TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () async =>
+                                await controller.deletePresupuesto(item),
+                            child: const Text('Eliminar'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ));
   }
 
-  Future<dynamic> _savePresupuestoModal({Presupuesto? model}) {
-    return Get.defaultDialog(
-      title: 'Agregar presupuesto',
-      titlePadding: const EdgeInsets.only(top: 10.0),
-      content: Container(
-        margin: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextField(
-                focusNode: controller.descripcionFocus,
-                keyboardType: TextInputType.text,
-                controller: controller.descripcion,
-                maxLength: 64,
-                onSubmitted: controller.onFieldSubmittedDescricion,
-                decoration: const InputDecoration(
-                  labelText: 'Descripcion',
-                  hintText: 'Ejemplo: Comida',
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                focusNode: controller.cantidadFocus,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                controller: controller.cantidad,
-                maxLength: 10,
-                onSubmitted: controller.onFieldSubmittedCantidad,
-                decoration: const InputDecoration(
-                  labelText: 'Cantidad',
-                  hintText: 'Ejemplo: 10',
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      controller.cantidad.clear();
-                      controller.descripcion.clear();
-                      Get.back();
-                    },
-                    child: const Text('Cancelar'),
+  Future<dynamic> _savePresupuestoModal(BuildContext context,
+      {Presupuesto? model}) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Agregar presupuesto', textAlign: TextAlign.center),
+        titlePadding: const EdgeInsets.all(10.0),
+        content: Container(
+          margin: const EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  focusNode: controller.descripcionFocus,
+                  keyboardType: TextInputType.text,
+                  controller: controller.descripcion,
+                  maxLength: 64,
+                  onSubmitted: controller.onFieldSubmittedDescricion,
+                  decoration: const InputDecoration(
+                    labelText: 'Descripcion',
+                    hintText: 'Ejemplo: Comida',
                   ),
-                  FilledButton(
-                    onPressed: () async =>
-                        await controller.savePresupuesto(model: model),
-                    child: const Text('Agregar'),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  focusNode: controller.cantidadFocus,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  controller: controller.cantidad,
+                  maxLength: 10,
+                  onSubmitted: controller.onFieldSubmittedCantidad,
+                  decoration: const InputDecoration(
+                    labelText: 'Cantidad',
+                    hintText: 'Ejemplo: 10',
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        controller.cantidad.clear();
+                        controller.descripcion.clear();
+                        Get.back();
+                      },
+                      child: const Text('Cancelar'),
+                    ),
+                    FilledButton(
+                      onPressed: () async =>
+                          await controller.savePresupuesto(model: model),
+                      child: const Text('Agregar'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
