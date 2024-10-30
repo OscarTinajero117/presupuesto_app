@@ -1,4 +1,4 @@
-package com.example.presupuesto_app
+package com.oscartinajero117.presupuesto_app
 
 import io.flutter.embedding.android.FlutterActivity
 
