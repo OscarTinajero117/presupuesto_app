@@ -14,13 +14,13 @@ Una aplicación simple y útil para gestionar el presupuesto personal, ayudando 
 1. Clona este repositorio:
 
    ```bash
-   git clone https://github.com/tu-usuario/PresupuestoApp.git
+   git clone https://github.com/tu-usuario/presupuesto_app.git
    ```
 
 2. Navega al directorio del proyecto:
 
    ```bash
-   cd PresupuestoApp
+   cd presupuesto_app
    ```
 
 3. Instala las dependencias:
