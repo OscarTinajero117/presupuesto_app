@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../buttons/toogle_theme_btn.dart';
+import '../buttons/toggle_theme_btn.dart';
 
 PreferredSizeWidget myAppBar({Widget? title}) {
   return AppBar(
@@ -10,7 +10,7 @@ PreferredSizeWidget myAppBar({Widget? title}) {
     actions: const [
       Padding(
         padding: EdgeInsets.only(right: 10.0),
-        child: ToogleThemeBtn(),
+        child: ToggleThemeBtn(),
       ),
     ],
   );
