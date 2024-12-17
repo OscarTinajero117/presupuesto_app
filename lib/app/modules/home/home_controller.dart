@@ -77,7 +77,7 @@ class HomeController extends GetxController {
       Get.back();
       Get.snackbar(
         'Error',
-        'Ocurrio un error al guardar el presupuesto',
+        'Ocurrió un error al guardar el presupuesto',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -114,7 +114,7 @@ class HomeController extends GetxController {
       Get.back();
       Get.snackbar(
         'Error',
-        'Ocurrio un error al eliminar el presupuesto',
+        'Ocurrió un error al eliminar el presupuesto',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

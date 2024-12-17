@@ -81,7 +81,7 @@ class PresupuestoController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Ocurrio un error al guardar el item',
+        'Ocurrió un error al guardar el item',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,
@@ -98,7 +98,7 @@ class PresupuestoController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Ocurrio un error al eliminar el item',
+        'Ocurrió un error al eliminar el item',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,

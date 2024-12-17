@@ -65,7 +65,7 @@ class HomePage extends GetView<HomeController> {
           fontSize: 20,
           color: deleteColor,
         ),
-        middleText: '¿Estas seguro de eliminar este presupuesto?',
+        middleText: 'Estás seguro de eliminar este presupuesto?',
         actions: [
           TextButton(
             onPressed: () {
@@ -100,7 +100,7 @@ class HomePage extends GetView<HomeController> {
                 maxLength: 64,
                 onSubmitted: controller.onFieldSubmittedDescricion,
                 decoration: const InputDecoration(
-                  labelText: 'Descripcion',
+                  labelText: 'Descripción',
                   hintText: 'Ejemplo: Comida',
                 ),
               ),
@@ -113,7 +113,7 @@ class HomePage extends GetView<HomeController> {
                 maxLength: 10,
                 onSubmitted: controller.onFieldSubmittedCantidad,
                 decoration: const InputDecoration(
-                  labelText: 'Cantidad',
+                  labelText: 'Cantidad de dinero',
                   hintText: 'Ejemplo: 10',
                 ),
               ),
