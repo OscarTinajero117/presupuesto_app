@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/models/presupuesto/presupuesto.dart';
 import '../../routes/pages.dart';
@@ -12,9 +13,10 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final txt = AppLocalizations.of(context);
     return Scaffold(
       appBar: myAppBar(
-        title: const Text('Presupuestos'),
+        title: Text(txt!.title),
       ),
       body: Obx(
         () => controller.isLoading.value
@@ -25,13 +27,23 @@ class HomePage extends GetView<HomeController> {
                   final item = controller.listPresupuestos[index];
                   return ListTile(
                     title: Text(item.descripcion),
-                    subtitle: Text('Presupuesto: \$ ${item.presupuesto}'),
+                    subtitle:
+                        Text('${txt.presupuesto}: \$ ${item.presupuesto}'),
                     leading: IconButton(
                       onPressed: () async {
                         controller.cantidad.text = item.presupuesto.toString();
                         controller.descripcion.text = item.descripcion;
 
-                        await _savePresupuestoModal(model: item);
+                        await _savePresupuestoModal(
+                          model: item,
+                          title: txt.agregar_presupuesto,
+                          descripcion: txt.descripcion,
+                          ejemploPresupuesto: txt.ejemplo_nombre_presupuesto,
+                          cantidad: txt.cantidad_dinero,
+                          ejemploCantidad: txt.ejemplo_cantidad_dinero,
+                          cancel: txt.cancelar,
+                          add: txt.agregar,
+                        );
                       },
                       icon: const Icon(Icons.edit_note),
                     ),
@@ -45,33 +57,54 @@ class HomePage extends GetView<HomeController> {
                         color: Colors.red,
                       ),
                       onPressed: () async => await _deletePresupuestoModal(
-                          theme.colorScheme.error, item),
+                        deleteColor: theme.colorScheme.error,
+                        item: item,
+                        titleDelete: txt.eliminar_presupuesto,
+                        middleDelete: txt.pregunta_eliminar_presupuesto,
+                        cancel: txt.cancelar,
+                        delete: txt.eliminar,
+                      ),
                     ),
                   );
                 },
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await _savePresupuestoModal(),
+        onPressed: () async => await _savePresupuestoModal(
+          title: txt.agregar_presupuesto,
+          descripcion: txt.descripcion,
+          ejemploPresupuesto: txt.ejemplo_nombre_presupuesto,
+          cantidad: txt.cantidad_dinero,
+          ejemploCantidad: txt.ejemplo_cantidad_dinero,
+          cancel: txt.cancelar,
+          add: txt.agregar,
+        ),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Future<dynamic> _deletePresupuestoModal(Color deleteColor, Presupuesto item) {
+  Future<dynamic> _deletePresupuestoModal({
+    required Color deleteColor,
+    required Presupuesto item,
+    required String titleDelete,
+    required String middleDelete,
+    required String cancel,
+    required String delete,
+  }) {
     return Get.defaultDialog(
-        title: 'Eliminar presupuesto',
+        title: titleDelete,
         titleStyle: TextStyle(
           fontSize: 20,
           color: deleteColor,
         ),
-        middleText: 'Estás seguro de eliminar este presupuesto?',
+        middleText: middleDelete,
         actions: [
           TextButton(
             onPressed: () {
               Get.back();
             },
-            child: const Text('Cancelar'),
+            child: Text(cancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
@@ -79,14 +112,23 @@ class HomePage extends GetView<HomeController> {
               textStyle: const TextStyle(color: Colors.white),
             ),
             onPressed: () async => await controller.deletePresupuesto(item),
-            child: const Text('Eliminar'),
+            child: Text(delete),
           ),
         ]);
   }
 
-  Future<dynamic> _savePresupuestoModal({Presupuesto? model}) {
+  Future<dynamic> _savePresupuestoModal({
+    required String title,
+    required String descripcion,
+    required String ejemploPresupuesto,
+    required String cantidad,
+    required String ejemploCantidad,
+    required String cancel,
+    required String add,
+    Presupuesto? model,
+  }) {
     return Get.defaultDialog(
-      title: 'Agregar presupuesto',
+      title: title,
       titlePadding: const EdgeInsets.only(top: 10.0),
       content: Container(
         margin: const EdgeInsets.all(10),
@@ -99,9 +141,9 @@ class HomePage extends GetView<HomeController> {
                 controller: controller.descripcion,
                 maxLength: 64,
                 onSubmitted: controller.onFieldSubmittedDescricion,
-                decoration: const InputDecoration(
-                  labelText: 'Descripción',
-                  hintText: 'Ejemplo: Comida',
+                decoration: InputDecoration(
+                  labelText: descripcion,
+                  hintText: ejemploPresupuesto,
                 ),
               ),
               const SizedBox(height: 20),
@@ -112,9 +154,9 @@ class HomePage extends GetView<HomeController> {
                 controller: controller.cantidad,
                 maxLength: 10,
                 onSubmitted: controller.onFieldSubmittedCantidad,
-                decoration: const InputDecoration(
-                  labelText: 'Cantidad de dinero',
-                  hintText: 'Ejemplo: 10',
+                decoration: InputDecoration(
+                  labelText: cantidad,
+                  hintText: ejemploCantidad,
                 ),
               ),
               const SizedBox(height: 20),
@@ -127,12 +169,12 @@ class HomePage extends GetView<HomeController> {
                       controller.descripcion.clear();
                       Get.back();
                     },
-                    child: const Text('Cancelar'),
+                    child: Text(cancel),
                   ),
                   FilledButton(
                     onPressed: () async =>
                         await controller.savePresupuesto(model: model),
-                    child: const Text('Agregar'),
+                    child: Text(add),
                   ),
                 ],
               ),

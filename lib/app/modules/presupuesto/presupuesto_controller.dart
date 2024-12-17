@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/presupuesto/item_presupuesto.dart';
@@ -50,12 +51,13 @@ class PresupuestoController extends GetxController {
   }
 
   Future<void> saveItemPresupuesto() async {
+    final txt = AppLocalizations.of(Get.overlayContext!);
     if (descripcion.text.isEmpty ||
         costo.text.isEmpty ||
         cantidad.text.isEmpty) {
       Get.snackbar(
         'Error',
-        'Todos los campos son obligatorios',
+        txt!.campos_obligatorios,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,
@@ -81,7 +83,7 @@ class PresupuestoController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Ocurrió un error al guardar el item',
+        txt!.error_guardar,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,
@@ -92,13 +94,14 @@ class PresupuestoController extends GetxController {
   }
 
   Future<void> deleteItemPresupuesto(ItemPresupuesto item) async {
+    final txt = AppLocalizations.of(Get.overlayContext!);
     try {
       await _presupuestoRepository.deleteItemPresupuesto(item);
       listItems.removeWhere((element) => element.id == item.id);
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Ocurrió un error al eliminar el item',
+        txt!.error_eliminar,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,

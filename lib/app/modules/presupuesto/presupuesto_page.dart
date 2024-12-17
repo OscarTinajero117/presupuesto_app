@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import '../../widgets/appbar/my_appbar.dart';
@@ -11,6 +12,7 @@ class PresupuestoPage extends GetView<PresupuestoController> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final txt = AppLocalizations.of(context);
     return Scaffold(
       appBar: myAppBar(
         title: Text(controller.presupuesto.value.descripcion),
@@ -23,7 +25,7 @@ class PresupuestoPage extends GetView<PresupuestoController> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Obx(() => Text(
-                      'Total: \$ ${controller.totalRestante}',
+                      '${txt!.total}: \$ ${controller.totalRestante}',
                       style: TextStyle(
                         fontSize: 20.0,
                         color: controller.totalRestante <
@@ -49,8 +51,8 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                     keyboardType: TextInputType.text,
                     controller: controller.descripcion,
                     onFieldSubmitted: controller.onFieldSubmittedDescripcion,
-                    labelText: 'Descripción del artículo',
-                    hintText: 'Ejemplo: Lápices',
+                    labelText: txt!.descripcion_articulo,
+                    hintText: txt.ejemplo_articulo,
                   ),
                   Row(
                     children: [
@@ -61,8 +63,8 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                               decimal: true),
                           controller: controller.costo,
                           onFieldSubmitted: controller.onFieldSubmittedCosto,
-                          labelText: 'Costo',
-                          hintText: 'Ejemplo: 10.50',
+                          labelText: txt.costo_articulo,
+                          hintText: '10.50',
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -72,8 +74,8 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                           keyboardType: const TextInputType.numberWithOptions(),
                           controller: controller.cantidad,
                           onFieldSubmitted: controller.onFieldSubmittedCantidad,
-                          labelText: 'Cantidad',
-                          hintText: 'Ejemplo: 4',
+                          labelText: txt.cantidad_articulo,
+                          hintText: '4',
                         ),
                       ),
                     ],
@@ -82,7 +84,7 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                   FilledButton(
                     onPressed: () async =>
                         await controller.saveItemPresupuesto(),
-                    child: const Text('Agregar'),
+                    child: Text(txt.agregar),
                   ),
                 ],
               ),
@@ -109,11 +111,12 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Unidad: \$ ${item.costo}'),
-                              Text('Cantidad: ${item.cantidad}'),
+                              Text('${txt.unidad}: \$ ${item.costo}'),
+                              Text('${txt.cantidad}: ${item.cantidad}'),
                             ],
                           ),
-                          Text('Total:     \$ ${item.cantidad * item.costo}'),
+                          Text(
+                              '${txt.total}:     \$ ${item.cantidad * item.costo}'),
                         ],
                       ),
                       trailing: IconButton(

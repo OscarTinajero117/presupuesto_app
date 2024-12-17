@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/presupuesto/presupuesto.dart';
@@ -33,10 +34,11 @@ class HomeController extends GetxController {
   }
 
   Future<void> savePresupuesto({Presupuesto? model}) async {
+    final txt = AppLocalizations.of(Get.overlayContext!);
     if (descripcion.text.isEmpty || cantidad.text.isEmpty) {
       Get.snackbar(
         'Error',
-        'Todos los campos son obligatorios',
+        txt!.campos_obligatorios,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -67,8 +69,8 @@ class HomeController extends GetxController {
 
       Get.back();
       Get.snackbar(
-        '¡Realizado!',
-        'Presupuesto guardado correctamente',
+        txt!.realizado,
+        txt.presupuesto_guardado_correctamente,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -77,7 +79,7 @@ class HomeController extends GetxController {
       Get.back();
       Get.snackbar(
         'Error',
-        'Ocurrió un error al guardar el presupuesto',
+        txt!.error_guardar,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -98,14 +100,15 @@ class HomeController extends GetxController {
   }
 
   Future<void> deletePresupuesto(Presupuesto model) async {
+    final txt = AppLocalizations.of(Get.overlayContext!);
     try {
       isLoading.value = true;
       await _presupuestoRepository.deletePresupuesto(model);
       listPresupuestos.removeWhere((element) => element.id == model.id);
       Get.back();
       Get.snackbar(
-        '¡Realizado!',
-        'Presupuesto eliminado correctamente',
+        txt!.realizado,
+        txt.presupuesto_eliminado_correctamente,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -114,7 +117,7 @@ class HomeController extends GetxController {
       Get.back();
       Get.snackbar(
         'Error',
-        'Ocurrió un error al eliminar el presupuesto',
+        txt!.error_eliminar,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
