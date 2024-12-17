@@ -21,9 +21,9 @@ class DB {
     );
     return openDatabase(
       path,
-      onCreate: createTables,
+      onCreate: createDatabase,
       version: dbVersion,
-      onUpgrade: upgradeTables,
+      onUpgrade: upgradeDatabase,
     );
   }
 }
