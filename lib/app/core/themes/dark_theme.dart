@@ -1,20 +1,22 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 final darkTheme = FlexThemeData.dark(
   scheme: FlexScheme.blue,
-  surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-  blendLevel: 13,
   subThemesData: const FlexSubThemesData(
-    blendOnLevel: 20,
-    useTextTheme: true,
+    interactionEffects: true,
+    tintedDisabledControls: true,
+    blendOnColors: true,
     useM2StyleDividerInM3: true,
-    filledButtonRadius: 0.0,
+    inputDecoratorIsFilled: true,
+    inputDecoratorBorderType: FlexInputBorderType.outline,
     alignedDropdown: true,
-    useInputDecoratorThemeInDialogs: true,
+    navigationRailUseIndicator: true,
+    navigationRailLabelType: NavigationRailLabelType.all,
   ),
   visualDensity: FlexColorScheme.comfortablePlatformDensity,
-  useMaterial3: true,
-  swapLegacyOnMaterial3: true,
+  cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
   fontFamily: 'NotoSans',
   // To use the Playground font, add GoogleFonts package and uncomment
   // fontFamily: GoogleFonts.notoSans().fontFamily,
