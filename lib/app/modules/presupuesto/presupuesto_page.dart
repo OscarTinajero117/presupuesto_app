@@ -25,6 +25,7 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                 Obx(() => Text(
                       'Total: \$ ${controller.totalRestante}',
                       style: TextStyle(
+                        fontSize: 20.0,
                         color: controller.totalRestante <
                                 controller.presupuesto.value.presupuesto * 0.1
                             ? theme.colorScheme.error
@@ -48,25 +49,34 @@ class PresupuestoPage extends GetView<PresupuestoController> {
                     keyboardType: TextInputType.text,
                     controller: controller.descripcion,
                     onFieldSubmitted: controller.onFieldSubmittedDescripcion,
-                    labelText: 'Descripcion',
-                    hintText: 'Ejemplo: Lapices',
+                    labelText: 'Descripción del artículo',
+                    hintText: 'Ejemplo: Lápices',
                   ),
-                  FormInput(
-                    focusNode: controller.costoFocus,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    controller: controller.costo,
-                    onFieldSubmitted: controller.onFieldSubmittedCosto,
-                    labelText: 'Costo',
-                    hintText: 'Ejemplo: 10.50',
-                  ),
-                  FormInput(
-                    focusNode: controller.cantidadFocus,
-                    keyboardType: const TextInputType.numberWithOptions(),
-                    controller: controller.cantidad,
-                    onFieldSubmitted: controller.onFieldSubmittedCantidad,
-                    labelText: 'Cantidad',
-                    hintText: 'Ejemplo: 4',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FormInput(
+                          focusNode: controller.costoFocus,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          controller: controller.costo,
+                          onFieldSubmitted: controller.onFieldSubmittedCosto,
+                          labelText: 'Costo',
+                          hintText: 'Ejemplo: 10.50',
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: FormInput(
+                          focusNode: controller.cantidadFocus,
+                          keyboardType: const TextInputType.numberWithOptions(),
+                          controller: controller.cantidad,
+                          onFieldSubmitted: controller.onFieldSubmittedCantidad,
+                          labelText: 'Cantidad',
+                          hintText: 'Ejemplo: 4',
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   FilledButton(
@@ -83,6 +93,7 @@ class PresupuestoPage extends GetView<PresupuestoController> {
             child: Divider(),
           ),
           Expanded(
+            flex: 2,
             child: Container(
               margin: const EdgeInsets.all(20),
               child: Obx(
